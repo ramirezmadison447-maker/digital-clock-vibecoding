@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Multi Time Zone Digital Clock</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>Multi Time Zone Digital Clock</h1>
+
+    <form id="add-zone-form" class="controls" autocomplete="off">
+      <input id="zone-input" list="tz-list" placeholder="Enter IANA time zone (e.g. Europe/Madrid)" />
+      <datalist id="tz-list">
+        <!-- A helpful short list of common time zones -->
+        <option>UTC</option>
+        <option>Europe/London</option>
+        <option>Europe/Madrid</option>
+        <option>America/New_York</option>
+        <option>America/Los_Angeles</option>
+        <option>Asia/Tokyo</option>
+        <option>Asia/Kolkata</option>
+        <option>Australia/Sydney</option>
+        <option>America/Sao_Paulo</option>
+        <option>Africa/Johannesburg</option>
+      </datalist>
+
+      <button type="submit">Add zone</button>
+
+      <label class="toggle">
+        <input id="hour12-toggle" type="checkbox" />
+        12-hour
+      </label>
+
+      <label class="toggle">
+        <input id="show-seconds-toggle" type="checkbox" checked />
+        Show seconds
+      </label>
+    </form>
+
+    <section id="clocks" class="clocks" aria-live="polite"></section>
+
+    <footer class="footer">
+      <small>Tip: use IANA zone names (e.g. "America/Argentina/Buenos_Aires"). Invalid zones are rejected.</small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
