@@ -145,3 +145,12 @@ body.light-mode .footer,
 body.light-mode .toggle{
   color: #5a6b78;
 }
+
+.copy-btn{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.1);
+  color: var(--accent);
+  cursor:pointer;
+  padding:6px 8px;
+  border-radius:8px;
+}
