@@ -104,6 +104,21 @@ function removeZone(tz){
   renderAll();
 }
 
+function copyTimeToClipboard(zone, buttonEl){
+  const now = new Date();
+  const timeStr = formatTimeForZone(now, zone);
+  const text = `${zone}: ${timeStr}`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const original = buttonEl.textContent;
+    buttonEl.textContent = 'Copied!';
+    setTimeout(() => { buttonEl.textContent = original; }, 1500);
+  }).catch(() => {
+    alert('No se pudo copiar al portapapeles.');
+  });
+}
+
+
 function createCard(zone){
   const card = document.createElement('article');
   card.className = 'card';
@@ -124,6 +139,12 @@ function createCard(zone){
   offset.className = 'offset';
   offset.textContent = '';
 
+  const copy = document.createElement('button');
+  copy.className = 'copy-btn';
+  copy.type = 'button';
+  copy.textContent = 'Copy';
+  copy.addEventListener('click', () => copyTimeToClipboard(zone, copy));
+
   const remove = document.createElement('button');
   remove.className = 'remove-btn';
   remove.type = 'button';
@@ -131,6 +152,7 @@ function createCard(zone){
   remove.addEventListener('click', () => removeZone(zone));
 
   meta.appendChild(offset);
+  meta.appendChild(copy);
   meta.appendChild(remove);
   card.appendChild(name);
   card.appendChild(time);
