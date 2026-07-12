@@ -119,3 +119,29 @@ h1{
 }
 
 .footer{margin-top:18px;color:var(--muted)}
+
+body.light-mode{
+  background: linear-gradient(180deg,#f0f4f8 0%, #ffffff 100%);
+  color: #1a2530;
+}
+
+body.light-mode .card{
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+body.light-mode .time{
+  color: #007a5e;
+}
+
+body.light-mode .controls input[type="text"]{
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: #1a2530;
+}
+
+body.light-mode .meta,
+body.light-mode .footer,
+body.light-mode .toggle{
+  color: #5a6b78;
+}

@@ -19,12 +19,15 @@ const addForm = document.getElementById('add-zone-form');
 const zoneInput = document.getElementById('zone-input');
 const hour12Toggle = document.getElementById('hour12-toggle');
 const showSecondsToggle = document.getElementById('show-seconds-toggle');
+const themeToggle = document.getElementById('theme-toggle');
 
 let zones = loadZones();
 let prefs = loadPrefs();
 
 hour12Toggle.checked = prefs.hour12;
 showSecondsToggle.checked = prefs.showSeconds;
+themeToggle.checked = prefs.lightMode || false;
+document.body.classList.toggle('light-mode', themeToggle.checked);
 
 hour12Toggle.addEventListener('change', () => {
   prefs.hour12 = hour12Toggle.checked;
@@ -35,6 +38,11 @@ showSecondsToggle.addEventListener('change', () => {
   prefs.showSeconds = showSecondsToggle.checked;
   savePrefs();
   renderAll();
+});
+themeToggle.addEventListener('change', () => {
+  prefs.lightMode = themeToggle.checked;
+  savePrefs();
+  document.body.classList.toggle('light-mode', themeToggle.checked);
 });
 
 addForm.addEventListener('submit', (e) => {
@@ -62,7 +70,7 @@ function loadPrefs(){
     const raw = localStorage.getItem(STORAGE_KEY + ':prefs');
     if (raw) return JSON.parse(raw);
   }catch(e){}
-  return { hour12: false, showSeconds: true };
+  return { hour12: false, showSeconds: true, lightMode: false };
 }
 
 function savePrefs(){
