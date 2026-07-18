@@ -139,6 +139,10 @@ function createCard(zone){
   offset.className = 'offset';
   offset.textContent = '';
 
+  const midnight = document.createElement('div');
+  midnight.className = 'midnight';
+  midnight.textContent = '';
+
   const copy = document.createElement('button');
   copy.className = 'copy-btn';
   copy.type = 'button';
@@ -152,13 +156,14 @@ function createCard(zone){
   remove.addEventListener('click', () => removeZone(zone));
 
   meta.appendChild(offset);
+  meta.appendChild(midnight);
   meta.appendChild(copy);
   meta.appendChild(remove);
   card.appendChild(name);
   card.appendChild(time);
   card.appendChild(meta);
 
-  return { card, timeEl: time, offsetEl: offset };
+  return { card, timeEl: time, offsetEl: offset, midnightEl: midnight };
 }
 
 function formatTimeForZone(date, zone){
@@ -188,6 +193,31 @@ function formatOffsetForZone(date, zone){
   }
 }
 
+function timeUntilMidnight(date, zone){
+  // Get the current hour/minute/second in the target zone
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: zone,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).formatToParts(date);
+
+  const get = (type) => parseInt(parts.find(p => p.type === type).value, 10);
+  const hours = get('hour') % 24; // "24" edge case in some locales
+  const minutes = get('minute');
+  const seconds = get('second');
+
+  const secondsSinceMidnight = hours * 3600 + minutes * 60 + seconds;
+  const secondsRemaining = 86400 - secondsSinceMidnight;
+
+  const hRemaining = Math.floor(secondsRemaining / 3600);
+  const mRemaining = Math.floor((secondsRemaining % 3600) / 60);
+
+  return `${hRemaining}h ${mRemaining}m para medianoche`;
+}
+
+
 let cardCache = new Map();
 
 function renderAll(){
@@ -195,9 +225,9 @@ function renderAll(){
   zoneListEl.innerHTML = '';
   cardCache.clear();
   zones.forEach(zone => {
-    const { card, timeEl, offsetEl } = createCard(zone);
+    const { card, timeEl, offsetEl, midnightEl } = createCard(zone);
     zoneListEl.appendChild(card);
-    cardCache.set(zone, { timeEl, offsetEl });
+    cardCache.set(zone, { timeEl, offsetEl, midnightEl });
   });
   // Immediate update
   updateClocks();
@@ -210,6 +240,7 @@ function updateClocks(){
     if (!entry) continue;
     entry.timeEl.textContent = formatTimeForZone(now, zone);
     entry.offsetEl.textContent = formatOffsetForZone(now, zone);
+    entry.midnightEl.textContent = timeUntilMidnight(now, zone);
   }
 }
 

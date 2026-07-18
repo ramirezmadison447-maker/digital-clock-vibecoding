@@ -154,3 +154,9 @@ body.light-mode .toggle{
   padding:6px 8px;
   border-radius:8px;
 }
+
+.midnight{
+  font-size:0.8rem;
+  color: var(--muted);
+  opacity:0.7;
+}
